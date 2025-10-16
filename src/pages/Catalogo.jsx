@@ -11,23 +11,49 @@ export default function Catalogo() {
     imagem: "",
   });
 
-  // Simulação de carregamento (mock da API)
   useEffect(() => {
+    // Simula um carregamento de "API"
     setTimeout(() => {
       setProdutos([
         {
           id: 1,
           nome: "Coleira Estilosa",
           preco: 49.9,
-          descricao: "Coleira ajustável com design moderno.",
-          imagem: "download(2).jpg",
+          descricao: "Coleira ajustável com design moderno e resistente.",
+          imagem:
+            "https://images.unsplash.com/photo-1601758123927-19686a9e5d0a?auto=format&fit=crop&w=500&q=80",
         },
         {
           id: 2,
           nome: "Caminha Conforto",
           preco: 129.9,
-          descricao: "Caminha macia e lavável para seu pet.",
-          imagem: "download(1).jpg",
+          descricao: "Caminha macia e lavável para o conforto do seu pet.",
+          imagem:
+            "https://images.unsplash.com/photo-1601758124040-1d5f9f8f7f7e?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 3,
+          nome: "Brinquedo Mordedor",
+          preco: 29.9,
+          descricao: "Brinquedo colorido ideal para cães de pequeno porte.",
+          imagem:
+            "https://images.unsplash.com/photo-1601758174772-b2c3b2b4bde0?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 4,
+          nome: "Tigela Inox Premium",
+          preco: 59.9,
+          descricao: "Tigela de aço inoxidável antiderrapante e higiênica.",
+          imagem:
+            "https://images.unsplash.com/photo-1598133894003-cd3a45dc57f8?auto=format&fit=crop&w=500&q=80",
+        },
+        {
+          id: 5,
+          nome: "Casinha de Madeira",
+          preco: 299.9,
+          descricao: "Casinha confortável, resistente e de fácil limpeza.",
+          imagem:
+            "https://images.unsplash.com/photo-1619983081563-430d43c45d3d?auto=format&fit=crop&w=500&q=80",
         },
       ]);
       setCarregando(false);
@@ -49,7 +75,9 @@ export default function Catalogo() {
     const novo = {
       id: produtos.length + 1,
       ...novoProduto,
-      imagem: novoProduto.imagem || "https://via.placeholder.com/200",
+      imagem:
+        novoProduto.imagem ||
+        "https://via.placeholder.com/400x300?text=Produto+Pet",
     };
 
     setProdutos([...produtos, novo]);
@@ -57,72 +85,54 @@ export default function Catalogo() {
   }
 
   if (carregando) {
-    return <p style={{ textAlign: "center" }}>Carregando produtos...</p>;
+    return <p className="loading">Carregando produtos...</p>;
   }
 
   return (
-    <div className="catalogo-container" style={{ padding: "20px" }}>
-      <h2>Adicionar Novo Produto</h2>
+    <div className="catalogo">
+      <section className="form-section">
+        <h2>Adicionar Novo Produto</h2>
 
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome do produto"
-          value={novoProduto.nome}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="preco"
-          placeholder="Preço"
-          value={novoProduto.preco}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="descricao"
-          placeholder="Descrição"
-          value={novoProduto.descricao}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="imagem"
-          placeholder="URL da imagem (opcional)"
-          value={novoProduto.imagem}
-          onChange={handleChange}
-        />
-        <button type="submit">Adicionar Produto</button>
-      </form>
-
-      <hr style={{ margin: "30px 0" }} />
-
-      <div style={gridStyle}>
-        {produtos.map((produto) => (
-          <ProdutoCard
-            key={produto.id}
-            nome={produto.nome}
-            preco={produto.preco}
-            descricao={produto.descricao}
-            imagem={produto.imagem}
+        <form onSubmit={handleSubmit} className="formulario">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome do produto"
+            value={novoProduto.nome}
+            onChange={handleChange}
           />
+          <input
+            type="number"
+            name="preco"
+            placeholder="Preço"
+            value={novoProduto.preco}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="descricao"
+            placeholder="Descrição"
+            value={novoProduto.descricao}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="imagem"
+            placeholder="URL da imagem (opcional)"
+            value={novoProduto.imagem}
+            onChange={handleChange}
+          />
+          <button type="submit">Adicionar Produto</button>
+        </form>
+      </section>
+
+      <hr />
+
+      <section className="produtos">
+        {produtos.map((produto) => (
+          <ProdutoCard key={produto.id} {...produto} />
         ))}
-      </div>
+      </section>
     </div>
   );
 }
-
-const formStyle = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  maxWidth: "400px",
-  margin: "0 auto",
-};
-
-const gridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-  gap: "20px",
-};
